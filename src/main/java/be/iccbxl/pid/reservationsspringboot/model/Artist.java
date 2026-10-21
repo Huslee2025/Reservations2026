@@ -8,34 +8,27 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
-@Data 
-@NoArgsConstructor 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "artists")
 public class Artist {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
+  private String firstname;
+  private String lastname;
 
-	private String firstname;
-	private String lastname;
+  public Artist(String firstname, String lastname) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+  }
 
-
-	public Artist(String firstname, String lastname){
-		this.firstname = firstname;
-		this.lastname = lastname;
-	}
-
-
-	@Override
-	public String toString(){
-		return firstname + " " + lastname;
-	}
-
-
+  @Override
+  public String toString() {
+    return firstname + " " + lastname;
+  }
 
 }
