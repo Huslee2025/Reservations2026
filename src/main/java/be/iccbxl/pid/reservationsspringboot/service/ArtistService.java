@@ -9,40 +9,44 @@ import org.springframework.stereotype.Service;
 import be.iccbxl.pid.reservationsspringboot.model.Artist;
 import be.iccbxl.pid.reservationsspringboot.repository.ArtistRepository;
 
+@Service
+public class ArtistService {
 
+  @Autowired
+  private ArtistRepository artistRepository;
 
+  public List<Artist> getAllArtists() {
 
+    List<Artist> artists = new ArrayList<>();
 
-@Service 
-public class ArtistService{
-		
-	@Autowired 
-	private ArtistRepository artistRepository;
+    artistRepository.findAll().forEach(artists::add);
 
-	public List<Artist> getAllArtists(){
+    return artists;
+  }
 
-		List<Artist> artists = new ArrayList<>();
+  public Artist getArtist(long id) {
+    return artistRepository.findById(id);
+  }
 
-		artistRepository.findAll().forEach(artists::add);
+  public void addArtist(Artist artist) {
+    artistRepository.save(artist);
+  }
 
-		return artists;
-	}
+  public void updateArtist(long id, Artist artist) {
 
+    Artist existing = artistRepository.findById(id);
 
-	public Artist getArtist(long id){
-		return artistRepository.findById(id);
-	}
+    if (existing == null) {
+      throw new IllegalArgumentException("Artiste introuvable : " + id);
+    }
 
+    existing.setFirstname(artist.getFirstname());
+    existing.setLastname(artist.getLastname());
 
-	public void addArtist(Artist artist){
-		artistRepository.save(artist);
-	}
+    artistRepository.save(existing);
+  }
 
-	public void updateArtist(long id, Artist artist){
-		artistRepository.save(artist);
-	}
-
-	public void deleteArtist(long id){
-		artistRepository.deleteById(id);
-	}
+  public void deleteArtist(long id) {
+    artistRepository.deleteById(id);
+  }
 }
