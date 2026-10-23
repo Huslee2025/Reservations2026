@@ -32,6 +32,21 @@
               <td>
                 <a th:href="@{/artists/{id}/edit(id=${artist.id})}">Edit</a>
               </td>
+              <td>
+                <form
+                  th:id="|deleteForm-${artist.id}|"
+                  th:action="@{/artists/{id}(id=${artist.id})}"
+                  th:method="delete"
+                >
+                  <a
+                    href="#"
+                    th:onclick="|if(confirm('Confirm delete artist #${artist.id}')) 
+	                    		document.getElementById('deleteForm-${artist.id}').submit(); 
+	                    		return false;|"
+                    >Delete</a
+                  >
+                </form>
+              </td>
             </tr>
           </tbody>
         </table>
