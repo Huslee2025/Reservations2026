@@ -23,7 +23,7 @@ public class User {
   private Long id;
   private String login;
   private String password;
-  private String firtsname;
+  private String firstname;
   private String lastname;
   private String email;
   private String langue;
@@ -35,7 +35,7 @@ public class User {
 
   @Override
   public String toString() {
-    return login + "(" + firtsname + " " + lastname + "-" + role + ")";
+    return login + "(" + firstname + " " + lastname + "-" + role + ")";
   }
 
 }
