@@ -2,7 +2,6 @@ package be.iccbxl.pid.reservationsspringboot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
@@ -10,10 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class SpringSecurityConfig  {
+public class SpringSecurityConfig {
 
   @Bean
-  public PasswordEncoder passwordEncoder()  {
+  public PasswordEncoder passwordEncoder() {
 
     return new BCryptPasswordEncoder(BCryptVersion.$2Y, 12);
 
@@ -24,13 +23,19 @@ public class SpringSecurityConfig  {
 
     return http
         .authorizeHttpRequests(auth -> {
-          auth.requestMatchers("/").permitAll();
-          auth.requestMatchers("/admin").hasRole("ADMIN");
-          auth.requestMatchers("/user").hasRole("MEMBER");
-          auth.anyRequest().authenticated();
+          auth
+              .requestMatchers("/").permitAll()
+              .requestMatchers("/login", "/login**", "/css/**", "/js/**").permitAll()
+              .requestMatchers("/admin").hasRole("ADMIN")
+              .requestMatchers("/user").hasRole("MEMBER")
+              .anyRequest().authenticated();
         })
-        .formLogin(Customizer.withDefaults())
-        .rememberMe(Customizer.withDefaults())
+        .formLogin((form) -> form
+            .loginPage("/login")
+            .usernameParameter("login")
+            .failureUrl("/login?loginError=true")
+            .permitAll())
+        .logout((logout) -> logout.permitAll())
         .build();
   }
 

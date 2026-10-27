@@ -1,7 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!doctype html>
+<html
+  lang="fr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Header fragment</title>
   </head>
   <body>
@@ -20,8 +25,13 @@
             </li>
           </ul>
         </div>
+        <div style="float: right">
+          <p sec:authorize="!isAuthenticated()">
+            Vous n'êtes pas connecté.<br />
+            <a th:href="@{/login}" class="nav-link">Se connecter</a>
+          </p>
+        </div>
       </div>
     </header>
   </body>
 </html>
-
