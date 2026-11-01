@@ -29,6 +29,10 @@
           <p sec:authorize="!isAuthenticated()">
             Vous n'êtes pas connecté.<br />
             <a th:href="@{/login}" class="nav-link">Se connecter</a>
+            <p sec:authorize="!isAuthenticated()">
+            <a th:href="@{/register}" class="nav-link">S'inscrire</a>
+          </p>
+
           </p>
           <div sec:authorize="isAuthenticated()">
             <p>

@@ -25,7 +25,7 @@ public class EmailService {
   @Value("${spring.application.frontend-url}")
   private String frontendUrl;
 
-public void sendPasswordResetMail(String to, String token) {
+  public void sendPasswordResetMail(String to, String token) {
 
     String url = frontendUrl + "/reset-password?token=" + token;
 
@@ -55,23 +55,22 @@ public void sendPasswordResetMail(String to, String token) {
     MimeMessage message = mailSender.createMimeMessage();
 
     try {
-        MimeMessageHelper helper =
-            new MimeMessageHelper(message, true, "UTF-8");
+      MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        helper.setFrom("no-reply@example.com"); // Adresse de test Mailtrap
-        helper.setTo(to);
-        helper.setSubject("Réinitialisation du mot de passe");
-        helper.setText(texte, html);
+      helper.setFrom("no-reply@example.com"); // Adresse de test Mailtrap
+      helper.setTo(to);
+      helper.setSubject("Réinitialisation du mot de passe");
+      helper.setText(texte, html);
 
-        mailSender.send(message);
+      mailSender.send(message);
 
     } catch (MessagingException e) {
-        logger.error("Erreur de préparation de l'e-mail", e);
-        throw new MailSendException("Erreur de préparation de l'e-mail", e);
+      logger.error("Erreur de préparation de l'e-mail", e);
+      throw new MailSendException("Erreur de préparation de l'e-mail", e);
 
     } catch (MailException e) {
-        logger.error("Échec de l'envoi de l'e-mail", e);
-        throw e;
+      logger.error("Échec de l'envoi de l'e-mail", e);
+      throw e;
     }
   }
 }
