@@ -16,14 +16,14 @@
       <form th:action="@{/register}" th:object="${user}" method="post">
         <div>
           <label>Prénom</label>
-          <input type="text" th:field="*{firstName}" required>
-            <div class="error" th:errors="*{firstName}"></div>
+          <input type="text" th:field="*{firstname}" required>
+            <div class="error" th:errors="*{firstname}"></div>
         </div>
 
         <div>
           <label>Nom</label>
-          <input type="text" th:field="*{lastName}" required>
-            <div class="error" th:errors="*{lastName}"></div>
+          <input type="text" th:field="*{lastname}" required>
+            <div class="error" th:errors="*{lastname}"></div>
         </div>
 
         <div>

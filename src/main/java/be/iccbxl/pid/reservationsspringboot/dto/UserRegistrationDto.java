@@ -12,10 +12,10 @@ import lombok.Data;
 public class UserRegistrationDto{
 
   @NotBlank(message="Le prénom est obligatoire")
-  private String firstName;
+  private String firstname;
 
   @NotBlank(message="Le nom est obligatoire")
-  private String lastName;
+  private String lastname;
 
   @NotBlank(message = "Le login est obligatoire")
   @Size(min=4,max=20,message = "Le login doit contenir entre 4 et 20 caractères")
