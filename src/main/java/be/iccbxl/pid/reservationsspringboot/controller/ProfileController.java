@@ -2,6 +2,7 @@ package be.iccbxl.pid.reservationsspringboot.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,8 +14,11 @@ import be.iccbxl.pid.reservationsspringboot.model.Language;
 import be.iccbxl.pid.reservationsspringboot.model.User;
 import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
 import be.iccbxl.pid.reservationsspringboot.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -81,6 +85,41 @@ public class ProfileController {
     userService.updateUserFromDto(dto);
     redirAttrs.addFlashAttribute("successMessage", "Profil mis à jour avec succès !");
     return "redirect:profile";
+  }
+
+  @DeleteMapping("/profile/delete")
+  public String deleteAccount(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirAttrs){
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String login = auth.getName();
+
+    if(request.isUserInRole("ADMIN")){
+      redirAttrs.addFlashAttribute("errorMessage","Pas de suppression de son propre compte admin !");
+
+      return "redirect:/profile";
+    }
+
+    //Supprimer l'utilisateur courant 
+    userService.deleteByLogin(login);
+
+    //Invalider la session HTTP (déconnecter l'utilisateur)
+    /* Solution 1
+    Http session =request.getSession(false);
+    if(session != null){
+      session.invalidate();
+    }
+    */ 
+
+    //Variante plus Spring-Security "propre" (Solution 2)
+    if(auth != null){
+      new SecurityContextLogoutHandler().logout(request, response, auth);
+    }
+
+    //Effacer le contexte de sécurité 
+    SecurityContextHolder.clearContext();
+
+    redirAttrs.addFlashAttribute("successMessage","Votre compte a été supprimé avec succès.");
+
+    return "redirect:/";
   }
 
 }
