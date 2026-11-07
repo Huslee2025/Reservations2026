@@ -2,6 +2,7 @@ package be.iccbxl.pid.reservationsspringboot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -39,11 +40,24 @@ public class SpringSecurityConfig {
     return http.cors(Customizer.withDefaults())
         .csrf(Customizer.withDefaults())
         .authorizeHttpRequests(auth -> { auth 
-                  
+          //Pages accessibles à tous
           .requestMatchers("/").permitAll()
           .requestMatchers("/login","/login**","/css/**","/js/**","/forgot-password","/reset-password","/reset-success","/register").permitAll()
+
+          //Création d'un artiste : ADMIN uniquement
+          .requestMatchers("/artists/create").hasRole("ADMIN")
+
+          //Consultation des artistes : publique
+          .requestMatchers(HttpMethod.GET,"/artists","/artists/{id}").permitAll()
+
+          //Toutes les autres opérations sur les artistes : ADMIN
+          .requestMatchers("/artists","/artists/**").hasRole("ADMIN")
+
+          //Accès réservé aux utilisateurs selon leur rôle
           .requestMatchers("/admin").hasRole("ADMIN")
           .requestMatchers("/user").hasRole("MEMBER")
+
+          //Toutes les autres routes nécessitent une connexion
           .anyRequest().authenticated();
         })
         .formLogin(form -> form

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import be.iccbxl.pid.reservationsspringboot.model.Artist;
@@ -28,10 +29,12 @@ public class ArtistService {
     return artistRepository.findById(id);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   public void addArtist(Artist artist) {
     artistRepository.save(artist);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   public void updateArtist(long id, Artist artist) {
 
     Artist existing = artistRepository.findById(id);
@@ -46,6 +49,7 @@ public class ArtistService {
     artistRepository.save(existing);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   public void deleteArtist(long id) {
     artistRepository.deleteById(id);
   }

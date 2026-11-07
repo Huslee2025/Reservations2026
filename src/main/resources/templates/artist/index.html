@@ -2,6 +2,7 @@
 <html
   lang="fr"
   xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
   layout:decorate="~{layouts/main}"
 >
   <head>
@@ -13,7 +14,7 @@
       <div layout:fragment="content">
         <h2 th:text="${title}">Liste des artistes</h2>
 
-        <div class="actions">
+        <div class="actions" sec:authorize="hasRole('ADMIN')">
           <a th:href="@{/artists/create}">Add new artist</a>
         </div>
 
@@ -22,7 +23,8 @@
             <tr>
               <th>Firstname</th>
               <th>Lastname</th>
-              <th colspan="2">Actions</th>
+              <th sec:authorize="hasRole('ADMIN')" colspan="3">Actions</th>
+              <th sec:authorize="!hasRole('ADMIN')">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -30,10 +32,10 @@
               <td th:text="${artist.firstname}">Bob</td>
               <td th:text="${artist.lastname}">Sull</td>
               <td><a th:href="@{/artists/{id}(id=${artist.id})}">View</a></td>
-              <td>
+              <td sec:authorize="hasRole('ADMIN')">
                 <a th:href="@{/artists/{id}/edit(id=${artist.id})}">Edit</a>
               </td>
-              <td>
+              <td sec:authorize="hasRole('ADMIN')">
                 <form
                   th:id="|deleteForm-${artist.id}|"
                   th:action="@{/artists/{id}(id=${artist.id})}"
