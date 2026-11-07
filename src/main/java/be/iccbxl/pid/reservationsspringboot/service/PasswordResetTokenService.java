@@ -32,6 +32,7 @@ public class PasswordResetTokenService {
 
   public User validatePasswordResetToken(String token) {
 
+
     PasswordResetToken prt = tokenRepo.findByToken(token).orElse(null);
     if (prt == null || prt.isExpired()) {
 
@@ -39,7 +40,13 @@ public class PasswordResetTokenService {
 
     }
 
-    return prt.getUser();
+    User user = prt.getUser();
+
+    if(user==null || user.getDeletedAt()!=null){
+      return null;
+    }
+
+    return user;
 
   }
 

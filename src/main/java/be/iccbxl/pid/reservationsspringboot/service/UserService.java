@@ -1,5 +1,6 @@
 package be.iccbxl.pid.reservationsspringboot.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,20 +23,17 @@ public class UserService {
   private PasswordEncoder passwordEncoder;
 
   public List<User> getAllUsers() {
-    List<User> users = new ArrayList<>();
 
-    userRepository.findAll().forEach(users::add);
-
-    return users;
+    return userRepository.findByDeletedAtIsNull();
 
   }
 
   public User getUser(long id) {
-    return userRepository.findById(id);
+    return userRepository.findByIdAndDeletedAtIsNull(id);
   }
 
   public User findByEmail(String email) {
-    return userRepository.findByEmail(email).orElse(null);
+    return userRepository.findByEmailAndDeletedAtIsNull(email).orElse(null);
   }
 
   public boolean isLoginAndEmailAvailable(String login, String email){
@@ -59,12 +57,26 @@ public class UserService {
 
 
   public void updateUser(long id, User user) {
+
+    User activeUser = userRepository.findByIdAndDeletedAtIsNull(id);
+
+    if(activeUser == null){
+      throw new RuntimeException("Utilisateur introuvable");
+    }
+
+    if(user == null || user.getId() != id){
+      throw new IllegalArgumentException("Impossible de mettre à jour le compte : utilisateur absent ou identifiant incorrect");
+    }
     userRepository.save(user);
   }
 
+
   public void updateUserFromDto(UserProfileDto dto){
-    User user = userRepository.findById(dto.getId())
-    .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+    User user = userRepository.findByIdAndDeletedAtIsNull(dto.getId());
+    
+    if(user == null){
+      throw new RuntimeException("Utilisateur introuvable");
+    }
 
     user.setFirstname(dto.getFirstname());
     user.setLastname(dto.getLastname());
@@ -80,12 +92,21 @@ public class UserService {
   }
 
   public void deleteUser(long id) {
-    userRepository.deleteById(id);
+    User user = userRepository.findByIdAndDeletedAtIsNull(id);
+
+    if(user != null){
+      user.setDeletedAt(LocalDateTime.now());
+      userRepository.save(user);
+    }
   }
 
   public void deleteByLogin(String login){
     User user = userRepository.findByLogin(login);
-    userRepository.delete(user);
+
+    if(user != null && user.getDeletedAt() == null){
+      user.setDeletedAt(LocalDateTime.now());
+      userRepository.save(user);
+    }
   }
 
 }

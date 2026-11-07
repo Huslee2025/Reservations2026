@@ -29,6 +29,7 @@ public class LoginController {
       @RequestParam(required = false) final Boolean loginRequired,
       @RequestParam(required = false) final Boolean loginError,
       @RequestParam(required = false) final Boolean logoutSuccess,
+      @RequestParam(required = false) final Boolean accountDeleted,
       final Model model) {
 
     if (loginRequired == Boolean.TRUE) {
@@ -41,6 +42,10 @@ public class LoginController {
 
     if (logoutSuccess == Boolean.TRUE) {
       model.addAttribute("successMessage", "Vous êtes déconnecté avec succès.");
+    }
+
+    if(accountDeleted == Boolean.TRUE){
+      model.addAttribute("errorMessage","Votre compte a été supprimé. Votre session a été fermée.");
     }
 
     return "authentication/login";

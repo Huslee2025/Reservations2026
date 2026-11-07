@@ -42,6 +42,9 @@ public class User {
 
   private LocalDateTime createdAt = LocalDateTime.now();
 
+  @Column(name="deleted_at")
+  private LocalDateTime deletedAt;
+
   @Override
   public String toString() {
     return login + "(" + firstname + " " + lastname + "-" + role + ")";

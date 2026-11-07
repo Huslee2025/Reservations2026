@@ -21,10 +21,8 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ProfileController {
@@ -43,7 +41,7 @@ public class ProfileController {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     String login = auth.getName();
 
-    User user = userRepository.findByLogin(login);
+    User user = userRepository.findByLoginAndDeletedAtIsNull(login);
 
     if(user == null){
       throw new RuntimeException("Utilisateur introuvable");
@@ -80,6 +78,17 @@ public class ProfileController {
       model.addAttribute("errorMessage", "Erreurs de validation!");
       return "authentication/profile";
     }
+
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    String login = auth.getName();
+
+    User currentUser = userRepository.findByLoginAndDeletedAtIsNull(login);
+    if(currentUser == null){
+      throw new RuntimeException("Utilisateur introuvable");
+    }
+
+    dto.setId(currentUser.getId());
 
     // Appel du service pour gérer mot de passe, etc.
     userService.updateUserFromDto(dto);

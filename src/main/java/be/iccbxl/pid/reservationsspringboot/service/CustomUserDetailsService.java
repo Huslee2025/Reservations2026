@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
     System.out.println("Connexion demandée pour : " + username);
-    final User user = userRepository.findByLogin(username);
+    final User user = userRepository.findByLoginAndDeletedAtIsNull(username);
 
     if (user == null) {
       throw new UsernameNotFoundException("User " + username + " not found.");

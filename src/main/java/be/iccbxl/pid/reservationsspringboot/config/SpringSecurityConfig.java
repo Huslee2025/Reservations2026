@@ -11,7 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+
+import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -31,7 +34,7 @@ public class SpringSecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain configure(final HttpSecurity http) throws Exception {
+  public SecurityFilterChain configure(final HttpSecurity http, UserRepository userRepository) throws Exception {
 
     return http.cors(Customizer.withDefaults())
         .csrf(Customizer.withDefaults())
@@ -55,6 +58,9 @@ public class SpringSecurityConfig {
         .exceptionHandling(exception -> exception
             .authenticationEntryPoint(
                 new LoginUrlAuthenticationEntryPoint("/login?loginRequired=true")))
+      .addFilterAfter(
+         new DeletedAccountFilter(userRepository),
+          AnonymousAuthenticationFilter.class)
         .build();
   }
 
