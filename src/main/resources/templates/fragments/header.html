@@ -24,6 +24,9 @@
           <li th:classappend="${module == 'artists' ? 'active' : ''}">
             <a href="#" th:href="@{/artists}">Artists</a>
           </li>
+          <li sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/admin}">Administration</a>
+          </li>
         </ul>
       </div>
       <div style="float: right">
