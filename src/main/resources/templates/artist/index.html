@@ -53,6 +53,9 @@
             </tr>
           </tbody>
         </table>
+        <nav sec:authorize="hasRole('ADMIN')">
+          <a th:href="@{/admin}">Retour à l'administration</a>
+        </nav>
       </div>
     </div>
   </body>

@@ -54,7 +54,7 @@ public class SpringSecurityConfig {
           .requestMatchers("/artists","/artists/**").hasRole("ADMIN")
 
           //Accès réservé aux utilisateurs selon leur rôle
-          .requestMatchers("/admin").hasRole("ADMIN")
+          .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
           .requestMatchers("/user").hasRole("MEMBER")
 
           //Toutes les autres routes nécessitent une connexion

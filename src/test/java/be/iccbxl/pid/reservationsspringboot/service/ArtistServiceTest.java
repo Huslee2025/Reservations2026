@@ -78,15 +78,24 @@ class ArtistServiceTest {
   @Test
   void updateArtist_ShouldSaveArtist() {
 
-    // Preparer un artiste
-    Artist artist = new Artist("Daniel", "Marcelin");
+    //Artiste qui existe déjà
+    Artist existing = new Artist("Ancien","Nom");
 
-    // Appeler la methode de service
-    artistService.updateArtist(1L, artist);
+    //Nouveau artiste
+    Artist updated = new Artist("Daniel","Marcelin");
 
-    // Verifier l'appel au repository
-    verify(artistRepository).save(artist);
+    //Simuler la recherche dans la base
+    when(artistRepository.findById(1L)).thenReturn(existing);
 
+    //Appeler le service
+    artistService.updateArtist(1L, updated);
+
+    //Vérifier les nouvelles valeurs
+    assertEquals("Daniel", existing.getFirstname());
+    assertEquals("Marcelin", existing.getLastname());
+
+    //Vérifier l'enregistrement
+    verify(artistRepository).save(existing);
   }
 
   @Test

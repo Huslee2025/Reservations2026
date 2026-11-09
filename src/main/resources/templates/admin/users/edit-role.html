@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html
+  lang="fr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+  layout:decorate="~{layouts/main}">
+
+  <head>
+    <title>Modifier le rôle</title>
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+
+      <h2>Modifier le rôle d'un utilisateur</h2>
+
+      <p>
+        utilisateur :
+        <strong th:text="${userLogin}">anna</strong>
+      </p>
+
+      <form
+        th:action="@{/admin/users/{id}/edit-role(id=${userId})}"
+        th:object="${roleForm}"
+        method="post"
+        >
+
+        <div>
+          <label for="role">Rôle :</label>
+
+          <select id="role" th:field="*{role}" required>
+
+            <option value="">Sélectionner un rôle</option>
+
+            <option
+              th:each="availableRole : ${roles}"
+              th:value="${availableRole}"
+              th:text="${availableRole.value}"
+            >
+            Membre
+            </option>
+            
+          </select>
+
+          <p 
+            th:if="${#fields.hasErrors('role')}"
+            th:errors="*{role}"
+          ></p>
+
+        </div>
+
+        <div>
+          <button type="submit">Enregistrer</button>
+          <a th:href="@{/admin/users}">Annuler</a>
+        </div>
+
+      </form>
+
+    </div>
+  </body>
+</html>
+
