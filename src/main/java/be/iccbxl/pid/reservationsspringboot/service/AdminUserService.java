@@ -2,6 +2,7 @@ package be.iccbxl.pid.reservationsspringboot.service;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -98,6 +99,30 @@ public class AdminUserService{
     user.setDeletedAt(LocalDateTime.now());
 
     userRepository.save(user);
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @Transactional
+  public void reactivateUser(long id){
+
+    User user = userRepository.findByIdAndDeletedAtIsNotNull(id);
+
+    if(user == null){
+      throw new IllegalArgumentException(
+        "Utilisateur introuvable ou déjà actif"
+      );
+    }
+
+    user.setDeletedAt(null);
+
+    userRepository.save(user);
+
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @Transactional(readOnly = true)
+  public List<User> getDeactivatedUsers(){
+    return userRepository.findByDeletedAtIsNotNull();
   }
 
 }

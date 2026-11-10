@@ -13,6 +13,13 @@
   <div layout:fragment="content">
     <h2>Gestion des utilisateurs</h2>
 
+      <p>
+        <a th:href="@{/admin/users/deactivated}">
+           Voir les comptes désactivés
+        </a>
+      </p>
+
+
     <p>Liste des comptes utilisateurs actifs.</p>
 
     <table th:unless="${#lists.isEmpty(users)}">

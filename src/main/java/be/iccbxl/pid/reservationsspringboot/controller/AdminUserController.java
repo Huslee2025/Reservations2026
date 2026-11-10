@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 
+
+
 @Controller
 @RequestMapping("/admin/users")
 public class AdminUserController{
@@ -46,6 +48,19 @@ public class AdminUserController{
 
     return "admin/users/index";
   }
+
+  @GetMapping("/deactivated")
+    public String deactivatedUsers(Model model) {
+
+      model.addAttribute(
+       "deactivatedUsers",
+        adminUserService.getDeactivatedUsers()
+    );
+
+    return "admin/users/deactivated";
+
+    }
+    
 
   //Afficher le formulaire de modification du rôle
   @GetMapping("/{id}/edit-role")
@@ -98,6 +113,7 @@ public class AdminUserController{
     return "redirect:/admin/users";
   }
 
+  //Désactiver un compte utilisateur
   @PostMapping("/{id}/deactivate")
     public String deactivateUser(
     @PathVariable long id,
@@ -120,9 +136,35 @@ public class AdminUserController{
         
         return "redirect:/admin/users";
     }
+
+
+  //Réactiver un compte utilisateur 
+  @PostMapping("/{id}/reactivate")
+    public String reactivateUser(
+          @PathVariable long id,
+          RedirectAttributes redirectAttributes) {
+        
+    try{
+      adminUserService.reactivateUser(id);
+    } catch (IllegalArgumentException e){
+      throw new ResponseStatusException(
+        HttpStatus.NOT_FOUND,
+        e.getMessage(),
+        e 
+      );
+    }
+        
+        redirectAttributes.addFlashAttribute(
+          "successMessage",
+        "Compte utilisateur réactivé avec succès"
+    );
+
+    return "redirect:/admin/users/deactivated";
+    }
+    
     
 
-    //Retrouver un compte dont le rôle peut être modifié
+  //Retrouver un compte dont le rôle peut être modifié
     private User getEditableUser(long id) {
 
     User user = userService.getUser(id);

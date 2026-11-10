@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html
+lang="fr"
+xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+  layout:decorate="~{layouts/main}">
+
+  <head>
+    <title>Comptes désactivés</title>
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+
+      <h2>Comptes utilisateurs désactivés</h2>
+
+    
+
+      <p>Liste des comptes utilisateurs désactivés.</p>
+
+      <!-- Tableau des comptes désactivés-->
+      <table th:unless="${#lists.isEmpty(deactivatedUsers)}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Login</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr th:each="user : ${deactivatedUsers}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.login}"></td>
+            <td th:text="${user.firstname}"></td>
+            <td th:text="${user.lastname}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role.value}"></td>
+          
+            <td>
+          <form th:action="@{/admin/users/{id}/reactivate(id=${user.id})}"
+                method="post">
+
+            <button type="submit"
+                    onclick="return confirm('Réactiver ce compte utilisater ?');">
+                    Réactiver
+            </button>
+          </form>
+              </td>
+            </tr>
+        </tbody>
+      </table>
+
+      <!--Aucun compte désactivé-->
+      <p th:if="${#lists.isEmpty(deactivatedUsers)}">
+            Aucun compte désactivé
+      </p>
+
+      <nav>
+        <a th:href="@{/admin/users}">
+        Retour aux utilisateurs actifs
+        </a>
+      </nav>
+    </div>
+  </body>
+</html>
+
