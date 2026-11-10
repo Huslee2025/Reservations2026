@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html
-lang="fr"
-xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+  lang="fr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
   layout:decorate="~{layouts/main}">
-  
-  <head>
-    <title>Gestion des utilisateurs</title>  
-  </head>
 
-  <body>
-    <div layout:fragment="content">
-      <h2>Gestion des utilisateurs</h2>
+<head>
+  <title>Gestion des utilisateurs</title>
+</head>
 
-      <p>Liste des comptes utilisateurs actifs.</p>
+<body>
+  <div layout:fragment="content">
+    <h2>Gestion des utilisateurs</h2>
 
-      <table th:unless="${#lists.isEmpty(users)}">
+    <p>Liste des comptes utilisateurs actifs.</p>
+
+    <table th:unless="${#lists.isEmpty(users)}">
         <thead>
         <tr>
             <th>ID</th>
@@ -43,6 +43,17 @@ xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
                 >
                 Modifier le rôle 
               </a>
+
+              <form th:if="${user.role.name() != 'ADMIN'}"
+                    th:action="@{/admin/users/{id}/deactivate(id=${user.id})}"
+                    method="post"
+                    style="display: inline; margin-left: 12px;">
+                <button type="submit"
+                        onclick="return confirm('Désactiver ce compte utilisateur ?');">
+                        Désactiver
+                </button>
+                
+              </form>
             </td>
           </tr>
         </tbody>
@@ -58,4 +69,3 @@ xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
     </div>
   </body>
 </html>
-

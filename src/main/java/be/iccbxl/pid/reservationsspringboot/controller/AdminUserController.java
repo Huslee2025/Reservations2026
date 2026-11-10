@@ -21,6 +21,8 @@ import jakarta.validation.Valid;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -95,6 +97,30 @@ public class AdminUserController{
 
     return "redirect:/admin/users";
   }
+
+  @PostMapping("/{id}/deactivate")
+    public String deactivateUser(
+    @PathVariable long id,
+    RedirectAttributes redirectAttributes) {
+
+      try{
+      adminUserService.deactivateUser(id);
+      }catch(IllegalArgumentException e){
+        throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND,
+          e.getMessage(),
+          e
+      );
+    }
+
+    redirectAttributes.addFlashAttribute(
+      "successMessage",
+      "Compte utilisateur désactivé avec succès"
+    );
+        
+        return "redirect:/admin/users";
+    }
+    
 
     //Retrouver un compte dont le rôle peut être modifié
     private User getEditableUser(long id) {

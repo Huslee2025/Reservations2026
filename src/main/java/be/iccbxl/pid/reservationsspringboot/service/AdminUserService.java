@@ -1,6 +1,8 @@
 package be.iccbxl.pid.reservationsspringboot.service;
 
 
+import java.time.LocalDateTime;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -58,6 +60,44 @@ public class AdminUserService{
     user.setRole(newRole);
     userRepository.save(user);
 
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @Transactional
+  public void deactivateUser(long id){
+
+    //Vérifier que le compte existe et qu'il est actif
+    User user = userRepository.findByIdAndDeletedAtIsNull(id);
+
+    if(user == null){
+      throw new IllegalArgumentException(
+        "Utilisateur introuvable ou déjà désactivé"
+      );    
+    }
+
+    //Récupérer le login de l'administrateur connecté
+    String currentLogin = SecurityContextHolder.getContext()
+    .getAuthentication()
+    .getName();
+
+    //Empêcher la déactivation de son propre compte
+    if(user.getLogin().equals(currentLogin)){
+      throw new AccessDeniedException(
+        "Impossible de désactiver son propre compte"
+      );
+    }
+
+    //Empêcher la désactivation d'un autre administrateur
+    if(user.getRole() == UserRole.ADMIN){
+      throw new AccessDeniedException(
+      "Impossible de désactiver un administrateur"
+      );
+    }
+
+    //Désactiver le compte sans le supprimer de la BD
+    user.setDeletedAt(LocalDateTime.now());
+
+    userRepository.save(user);
   }
 
 }
