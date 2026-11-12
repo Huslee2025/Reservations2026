@@ -50,6 +50,9 @@ public class SpringSecurityConfig {
           //Consultation des artistes : publique
           .requestMatchers(HttpMethod.GET,"/artists","/artists/{id}").permitAll()
 
+          //Consultation des types : publique
+          .requestMatchers(HttpMethod.GET,"/types","/types/{id}").permitAll()
+
           //Toutes les autres opérations sur les artistes : ADMIN
           .requestMatchers("/artists","/artists/**").hasRole("ADMIN")
 
