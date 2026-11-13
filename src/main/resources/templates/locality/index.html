@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html
+  lang="fr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+  layout:decorate="~{layouts/main}">
+
+  <head>
+    <title>Liste des localités</title>
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+
+      <h2 th:text="${title}">Liste des localités</h2>
+
+      <table th:unless="${#lists.isEmpty(localities)}">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Code postal</th>
+            <th>Localité</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr th:each="locality:${localities}">
+            <td th:text="${locality.id}"></td>
+            <td th:text="${locality.postalCode}"></td>
+            <td th:text="${locality.locality}"></td>
+            <td>
+              <a th:href="@{/localities/{id}(id=${locality.id})}">
+              View
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p th:if="${#lists.isEmpty(localities)}">
+        Aucune localité disponible
+      </p>
+      
+    </div>
+  </body>
+</html>
+

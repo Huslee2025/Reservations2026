@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
+import jakarta.servlet.DispatcherType;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -40,6 +41,10 @@ public class SpringSecurityConfig {
     return http.cors(Customizer.withDefaults())
         .csrf(Customizer.withDefaults())
         .authorizeHttpRequests(auth -> { auth 
+
+          //Autoriser les erreurs
+          .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+
           //Pages accessibles à tous
           .requestMatchers("/").permitAll()
           .requestMatchers("/login","/login**","/css/**","/js/**","/forgot-password","/reset-password","/reset-success","/register").permitAll()
@@ -52,6 +57,9 @@ public class SpringSecurityConfig {
 
           //Consultation des types : publique
           .requestMatchers(HttpMethod.GET,"/types","/types/{id}").permitAll()
+
+          //Consultation des localités : publique
+          .requestMatchers(HttpMethod.GET, "/localities","/localities/{id}").permitAll()
 
           //Toutes les autres opérations sur les artistes : ADMIN
           .requestMatchers("/artists","/artists/**").hasRole("ADMIN")
