@@ -21,7 +21,6 @@ import jakarta.validation.Valid;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -46,7 +45,7 @@ public class AdminUserController{
 
     model.addAttribute("users",userService.getAllUsers());
 
-    return "admin/users/index";
+    return "users/index";
   }
 
   @GetMapping("/deactivated")
@@ -57,7 +56,7 @@ public class AdminUserController{
         adminUserService.getDeactivatedUsers()
     );
 
-    return "admin/users/deactivated";
+    return "users/deactivated";
 
     }
     
@@ -76,7 +75,7 @@ public class AdminUserController{
         model.addAttribute("userLogin",user.getLogin());
         model.addAttribute("roles",UserRole.values());
 
-        return "admin/users/edit-role";
+        return "users/edit-role";
     }
 
   //Enregistrer le nouveau rôle
@@ -96,7 +95,7 @@ public class AdminUserController{
       model.addAttribute("userLogin",user.getLogin());
       model.addAttribute("roles",UserRole.values());
 
-      return "admin/users/edit-role";
+      return "users/edit-role";
     }
 
     try{adminUserService.updateUserRole(id,dto.getRole());
