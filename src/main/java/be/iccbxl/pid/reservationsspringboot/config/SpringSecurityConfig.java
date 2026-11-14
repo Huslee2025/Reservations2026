@@ -68,6 +68,9 @@ public class SpringSecurityConfig {
           .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
           .requestMatchers("/user").hasRole("MEMBER")
 
+          //Consultation et gestion des rôles : ADMIN uniquement
+          .requestMatchers("/roles","/roles/**").hasRole("ADMIN")
+
           //Toutes les autres routes nécessitent une connexion
           .anyRequest().authenticated();
         })
