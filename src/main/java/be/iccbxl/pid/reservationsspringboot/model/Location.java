@@ -1,5 +1,8 @@
 package be.iccbxl.pid.reservationsspringboot.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.slugify.Slugify;
 
 import jakarta.persistence.Column;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +47,9 @@ public class Location {
   @Setter
   @Column(length = 30)
   private String phone;
+
+  @OneToMany(mappedBy = "location")
+  private List<Show> shows = new ArrayList<>();
 
   // Constructeur obligatoire pour JPA
   protected Location() {
@@ -88,6 +95,39 @@ public class Location {
     }
   }
 
+  public Location addShow(Show show){
+
+    if(show == null){
+      throw new IllegalArgumentException("Le spectacle est obligatoire");
+    }
+
+    if(!this.shows.contains(show)){
+      this.shows.add(show);
+    }
+
+    if(show.getLocation() != this){
+      show.setLocation(this);
+    }
+
+    return this;
+  }
+
+  public Location removeShow(Show show){
+
+    if(show == null){
+      return this;
+    }
+
+    this.shows.remove(show);
+
+    if(show.getLocation() == this){
+      show.setLocation(null);
+    }
+
+    return this;
+  }
+
+
   @Override
   public String toString() {
     return "Location [id" + id
@@ -96,7 +136,8 @@ public class Location {
         + ", address=" + address
         + ", localityId=" + (locality != null ? locality.getId() : null)
         + ", website=" + website
-        + ", phone=" + phone + "]";
+        + ", phone=" + phone + "]"
+        + ", shows=" + shows.size() + "]";
   }
 
 }
