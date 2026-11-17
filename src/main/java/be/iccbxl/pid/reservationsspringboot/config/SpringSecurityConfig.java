@@ -45,6 +45,9 @@ public class SpringSecurityConfig {
           //Autoriser les erreurs
           .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
 
+          //Accès public aux images
+          .requestMatchers(HttpMethod.GET,"/images/**").permitAll()
+
           //Pages accessibles à tous
           .requestMatchers("/").permitAll()
           .requestMatchers("/login","/login**","/css/**","/js/**","/forgot-password","/reset-password","/reset-success","/register").permitAll()
@@ -60,6 +63,10 @@ public class SpringSecurityConfig {
 
           //Consultation des localités : publique
           .requestMatchers(HttpMethod.GET, "/localities","/localities/{id}").permitAll()
+
+          //Consultation des spectacles : publique
+          .requestMatchers(HttpMethod.GET,"/shows").permitAll()
+          .requestMatchers(HttpMethod.GET,"/shows/{id}").permitAll()
 
           //Toutes les autres opérations sur les artistes : ADMIN
           .requestMatchers("/artists","/artists/**").hasRole("ADMIN")
