@@ -51,6 +51,9 @@ public class Location {
   @OneToMany(mappedBy = "location")
   private List<Show> shows = new ArrayList<>();
 
+  @OneToMany(mappedBy = "location")
+  private List<Representation> representations = new ArrayList<>();
+
   // Constructeur obligatoire pour JPA
   protected Location() {
   }
@@ -122,6 +125,29 @@ public class Location {
 
     if(show.getLocation() == this){
       show.setLocation(null);
+    }
+
+    return this;
+  }
+
+  public Location addRepresentation(Representation representation){
+
+    if(!this.representations.contains(representation)){
+      this.representations.add(representation);
+      representation.setLocation(this);
+    }
+
+    return this;
+  }
+
+  public Location removeRepresentation(Representation representation){
+
+    if(this.representations.contains(representation)){
+      this.representations.remove(representation);
+
+      if(representation.getLocation() == this){
+        representation.setLocation(null);
+      }
     }
 
     return this;
