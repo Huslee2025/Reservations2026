@@ -26,6 +26,22 @@
             9.99 €
           </span>
 
+          <!-- Exactement une représentation -->
+          <span th:if="${#lists.size(show.representations) == 1}">
+            - 1 représentation
+          </span>
+
+          <!-- Plusieurs représentations -->
+          <span th:if="${#lists.size(show.representations) > 1}"
+                th:text="|- ${#lists.size(show.representations)} représentations|">
+            - 2 représentations
+          </span>
+
+          <!-- Aucune représentation -->
+          <em th:if="${#lists.size(show.representations) == 0}">
+            Aucune représentation
+          </em>
+
           <a th:href="@{/shows/{id}(id=${show.id})}">
           View
           </a>
