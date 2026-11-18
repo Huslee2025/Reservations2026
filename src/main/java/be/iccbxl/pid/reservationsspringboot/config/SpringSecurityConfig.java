@@ -68,6 +68,9 @@ public class SpringSecurityConfig {
           .requestMatchers(HttpMethod.GET,"/shows").permitAll()
           .requestMatchers(HttpMethod.GET,"/shows/{id}").permitAll()
 
+          //Consultation des représentations
+          .requestMatchers(HttpMethod.GET,"/representations","/representations/{id}").permitAll()
+
           //Toutes les autres opérations sur les artistes : ADMIN
           .requestMatchers("/artists","/artists/**").hasRole("ADMIN")
 
