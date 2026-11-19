@@ -24,7 +24,7 @@ public class LocationService{
   }
 
   //Récupérer un lieu par son identifiant
-  public Location getLocation(Long id){
+  public Location getLocation(Integer id){
     return repository.findById(id).orElse(null);
   }
 
@@ -35,7 +35,7 @@ public class LocationService{
 
   //Modifier un lieu existant
   @Transactional
-  public void updateLocation(Long id, Location updatedLocation){
+  public void updateLocation(Integer id, Location updatedLocation){
 
     Location existingLocation = repository.findById(id)
         .orElseThrow(() -> 
@@ -51,7 +51,7 @@ public class LocationService{
   }
 
   //Supprimer un lieu
-  public void deleteLocation(Long id){
+  public void deleteLocation(Integer id){
     repository.deleteById(id);
   }
 }

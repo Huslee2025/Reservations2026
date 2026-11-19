@@ -37,7 +37,7 @@ public class RepresentationController{
 
   //Fiche d'une représentation
   @GetMapping("/representations/{id}")
-    public String show(@PathVariable("id") Long id, Model model){
+    public String show(@PathVariable("id") Integer id, Model model){
 
     Representation representation = representationService.getRepresentation(id);
 

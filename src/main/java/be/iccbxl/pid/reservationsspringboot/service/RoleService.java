@@ -23,7 +23,7 @@ public class RoleService{
   }
 
   //Récupérer un rôle par son identifiant
-  public Role getRole(Long id){
+  public Role getRole(Integer id){
     return roleRepository.findById(id).orElse(null);
   }
 
@@ -39,7 +39,7 @@ public class RoleService{
 
   //Modifier un rôle existant
   @Transactional
-  public void updateRole(Long id, Role updatedRole){
+  public void updateRole(Integer id, Role updatedRole){
 
     Role existingRole = roleRepository.findById(id)
           .orElseThrow(()->
@@ -53,7 +53,7 @@ public class RoleService{
 
   //Supprimer un rôle
   @Transactional
-  public void deleteRole(Long id){
+  public void deleteRole(Integer id){
 
     if(!roleRepository.existsById(id)){
       throw new IllegalArgumentException("Rôle introuvable");

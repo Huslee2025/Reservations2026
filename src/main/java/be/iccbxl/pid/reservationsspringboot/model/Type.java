@@ -21,7 +21,7 @@ import lombok.Setter;
 public class Type{
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @Setter
   @Column(name="type", length=60, nullable=false)

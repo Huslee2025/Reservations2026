@@ -20,7 +20,7 @@ public class LocalityService{
   }
 
   //Récupérer une localité par son identifiant
-  public Locality getLocality(Long id){
+  public Locality getLocality(Integer id){
     return localityRepository.findById(id).orElse(null);
   }
 
@@ -30,7 +30,7 @@ public class LocalityService{
   }
 
   //Modifier une localité existante
-  public void updateLocality(Long id, Locality updatedLocality){
+  public void updateLocality(Integer id, Locality updatedLocality){
 
     Locality existingLocality= localityRepository.findById(id)
                     .orElseThrow(()->
@@ -43,7 +43,7 @@ public class LocalityService{
   }
 
   //Supprimer une localité
-  public void deleteLocality(Long id){
+  public void deleteLocality(Integer id){
     localityRepository.deleteById(id);
   }
 

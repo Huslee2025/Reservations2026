@@ -11,7 +11,7 @@ import lombok.Data;
 public class UserProfileDto{
 
 
-  private Long id;
+private Integer id;
 
   @NotBlank(message = "Le prénom est obligatoire")
   private String firstname;

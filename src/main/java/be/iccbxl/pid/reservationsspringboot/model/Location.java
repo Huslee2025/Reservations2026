@@ -24,7 +24,7 @@ public class Location {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @Column(length = 60, unique = true, nullable = false)
   private String slug;

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import be.iccbxl.pid.reservationsspringboot.model.Location;
 import be.iccbxl.pid.reservationsspringboot.model.Show;
 
-public interface ShowRepository extends JpaRepository<Show,Long>{
+public interface ShowRepository extends JpaRepository<Show,Integer>{
 
   Show findBySlug(String slug);
 

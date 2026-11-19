@@ -6,15 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import be.iccbxl.pid.reservationsspringboot.model.Artist;
 
-public interface ArtistRepository extends JpaRepository<Artist,Long>{
+public interface ArtistRepository extends JpaRepository<Artist,Integer>{
 
 
 
 	List<Artist> findByLastname(String lastname);
-
-	Artist findById(long id);
-
-
 
 
 

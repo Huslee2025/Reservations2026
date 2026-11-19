@@ -38,7 +38,7 @@ public class ArtistController {
   }
 
   @GetMapping("/artists/{id}")
-  public String show(Model model, @PathVariable("id") long id) {
+  public String show(Model model, @PathVariable("id") Integer id) {
 
     Artist artist = service.getArtist(id);
 
@@ -50,7 +50,7 @@ public class ArtistController {
   }
 
   @GetMapping("/artists/{id}/edit")
-  public String edit(Model model, @PathVariable long id, HttpServletRequest request) {
+  public String edit(Model model, @PathVariable Integer id, HttpServletRequest request) {
 
     Artist artist = service.getArtist(id);
 
@@ -70,7 +70,7 @@ public class ArtistController {
   }
 
   @PutMapping("/artists/{id}/edit")
-  public String update(@Valid @ModelAttribute Artist artist, BindingResult bindingResult, @PathVariable long id,
+  public String update(@Valid @ModelAttribute Artist artist, BindingResult bindingResult, @PathVariable Integer id,
       Model model, RedirectAttributes redirAttrs) {
 
     if (bindingResult.hasErrors()) {
@@ -126,7 +126,7 @@ public class ArtistController {
   }
 
   @DeleteMapping("/artists/{id}")
-  public String delete(@PathVariable long id, Model model, RedirectAttributes redirAttrs) {
+  public String delete(@PathVariable Integer id, Model model, RedirectAttributes redirAttrs) {
     Artist existing = service.getArtist(id);
 
     if (existing != null) {

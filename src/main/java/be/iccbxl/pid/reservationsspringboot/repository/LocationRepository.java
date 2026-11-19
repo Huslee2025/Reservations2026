@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import be.iccbxl.pid.reservationsspringboot.model.Location;
 
-public interface LocationRepository extends JpaRepository<Location, Long>{
+public interface LocationRepository extends JpaRepository<Location, Integer>{
   Location findByDesignation(String designation);
 }

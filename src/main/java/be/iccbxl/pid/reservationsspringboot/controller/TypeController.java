@@ -39,7 +39,7 @@ public class TypeController{
 
   //Afficher les informations d'un type précis
   @GetMapping("/{id}")
-    public String show(@PathVariable("id") Long id,Model model) {
+    public String show(@PathVariable("id") Integer id,Model model) {
         
     Type type = typeService.getType(id);
 

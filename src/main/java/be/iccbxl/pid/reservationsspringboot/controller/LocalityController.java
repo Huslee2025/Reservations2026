@@ -38,7 +38,7 @@ public class LocalityController{
 
   //Afficher les informations d'une localité précise
   @GetMapping("/{id}")
-  public String show(@PathVariable("id") Long id,Model model){
+  public String show(@PathVariable("id") Integer id,Model model){
 
     Locality locality = localityService.getLocality(id);
 

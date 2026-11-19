@@ -59,7 +59,7 @@ public class AdminUserController{
 
   //Afficher le formulaire de modification du rôle
   @GetMapping("/{id}/edit-role")
-    public String editRole(@PathVariable long id,Model model) {
+    public String editRole(@PathVariable Integer id,Model model) {
         
         User user = getEditableUser(id);
 
@@ -77,7 +77,7 @@ public class AdminUserController{
   //Enregistrer le nouveau rôle
   @PostMapping("/{id}/edit-role")
     public String updateRole(
-        @PathVariable long id,
+        @PathVariable Integer id,
         @Valid @ModelAttribute("roleForm") AdminUserRoleDto dto,
         BindingResult result,
         Model model,
@@ -111,7 +111,7 @@ public class AdminUserController{
   //Désactiver un compte utilisateur
   @PostMapping("/{id}/deactivate")
     public String deactivateUser(
-    @PathVariable long id,
+    @PathVariable Integer id,
     RedirectAttributes redirectAttributes) {
 
       try{
@@ -136,7 +136,7 @@ public class AdminUserController{
   //Réactiver un compte utilisateur 
   @PostMapping("/{id}/reactivate")
     public String reactivateUser(
-          @PathVariable long id,
+          @PathVariable Integer id,
           RedirectAttributes redirectAttributes) {
         
     try{
@@ -160,7 +160,7 @@ public class AdminUserController{
     
 
   //Retrouver un compte dont le rôle peut être modifié
-    private User getEditableUser(long id) {
+    private User getEditableUser(Integer id) {
 
     User user = userService.getUser(id);
 

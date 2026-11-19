@@ -25,7 +25,7 @@ public class RepresentationService{
   }
 
   //Récupérer une représentation par son ID
-  public Representation getRepresentation(Long id){
+  public Representation getRepresentation(Integer id){
     return representationRepository.findById(id).orElse(null);
   }
 
@@ -35,12 +35,12 @@ public class RepresentationService{
   }
 
   //Modifier une représentation
-  public void updateRepresentation(Long id,Representation representation){
+  public void updateRepresentation(Integer id,Representation representation){
     representationRepository.save(representation);
   }
 
   //Supprimer une représentation
-  public void deleteRepresentation(Long id){
+  public void deleteRepresentation(Integer id){
     representationRepository.deleteById(id);
   }
 

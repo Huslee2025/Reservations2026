@@ -20,7 +20,7 @@ public class TypeService{
     return typeRepository.findAll();
   }
 
-  public  Type getType(Long id){
+  public  Type getType(Integer id){
 
     Optional<Type> type = typeRepository.findById(id);
 
@@ -31,7 +31,7 @@ public class TypeService{
     typeRepository.save(type);
   }
 
-  public void updateType(Long id, Type updatedType){
+  public void updateType(Integer id, Type updatedType){
 
     Type existingType = typeRepository.findById(id)
     .orElseThrow(()->
@@ -43,7 +43,7 @@ public class TypeService{
     typeRepository.save(existingType);
   }
 
-  public void deleteType(Long id){
+  public void deleteType(Integer id){
 
     typeRepository.deleteById(id);
   }

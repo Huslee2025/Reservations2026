@@ -25,7 +25,7 @@ public class AdminUserService{
 
   @PreAuthorize("hasRole('ADMIN')")
   @Transactional
-  public void updateUserRole(long id, UserRole newRole){
+  public void updateUserRole(Integer id, UserRole newRole){
 
     //Vérifier que l'utilisateur existe et que son compte est actif
     User user = userRepository.findByIdAndDeletedAtIsNull(id);
@@ -65,7 +65,7 @@ public class AdminUserService{
 
   @PreAuthorize("hasRole('ADMIN')")
   @Transactional
-  public void deactivateUser(long id){
+  public void deactivateUser(Integer id){
 
     //Vérifier que le compte existe et qu'il est actif
     User user = userRepository.findByIdAndDeletedAtIsNull(id);
@@ -103,7 +103,7 @@ public class AdminUserService{
 
   @PreAuthorize("hasRole('ADMIN')")
   @Transactional
-  public void reactivateUser(long id){
+  public void reactivateUser(Integer id){
 
     User user = userRepository.findByIdAndDeletedAtIsNotNull(id);
 

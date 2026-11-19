@@ -9,7 +9,7 @@ import be.iccbxl.pid.reservationsspringboot.model.Location;
 import be.iccbxl.pid.reservationsspringboot.model.Representation;
 import be.iccbxl.pid.reservationsspringboot.model.Show;
 
-public interface RepresentationRepository extends JpaRepository<Representation, Long>{
+public interface RepresentationRepository extends JpaRepository<Representation, Integer>{
   List<Representation> findByShow(Show show);
   List<Representation> findByLocation(Location location);
   List<Representation> findByWhen(LocalDateTime when);

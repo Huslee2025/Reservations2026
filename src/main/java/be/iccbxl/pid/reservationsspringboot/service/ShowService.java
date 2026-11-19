@@ -26,7 +26,7 @@ public class ShowService{
   }
 
   //Récupérer un spectacle par son identifiant
-  public Show getShow(Long id){
+  public Show getShow(Integer id){
     return showRepository.findById(id).orElse(null);
   }
 
@@ -37,7 +37,7 @@ public class ShowService{
 
   //Modifier un spectacle existant
   @Transactional
-  public void updateShow(Long id, Show updatedShow){
+  public void updateShow(Integer id, Show updatedShow){
 
     Show existingShow = showRepository.findById(id)
               .orElseThrow(() -> 
@@ -56,7 +56,7 @@ public class ShowService{
   }
 
   //Supprimer un spectacle
-  public void deleteShow(Long id){
+  public void deleteShow(Integer id){
     showRepository.deleteById(id);
   }
 

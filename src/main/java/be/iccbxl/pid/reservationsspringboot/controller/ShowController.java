@@ -38,7 +38,7 @@ public class ShowController{
 
   //Afficher la fiche d'un spectacle
   @GetMapping("/{id}")
-    public String show(@PathVariable("id") Long id, Model model){
+    public String show(@PathVariable("id") Integer id, Model model){
 
     Show show = showService.getShow(id);
 

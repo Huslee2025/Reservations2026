@@ -27,7 +27,7 @@ public class UserService {
 
   }
 
-  public User getUser(long id) {
+  public User getUser(Integer id) {
     return userRepository.findByIdAndDeletedAtIsNull(id);
   }
 
@@ -55,7 +55,7 @@ public class UserService {
   }
 
 
-  public void updateUser(long id, User user) {
+  public void updateUser(Integer id, User user) {
 
     User activeUser = userRepository.findByIdAndDeletedAtIsNull(id);
 
@@ -90,7 +90,7 @@ public class UserService {
     userRepository.save(user);
   }
 
-  public void deleteUser(long id) {
+  public void deleteUser(Integer id) {
     User user = userRepository.findByIdAndDeletedAtIsNull(id);
 
     if(user != null){

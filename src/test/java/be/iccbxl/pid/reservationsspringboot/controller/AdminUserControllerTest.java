@@ -94,7 +94,7 @@ class AdminUserControllerTest{
     //Vérifier le rôle initial
     assertEquals(
       UserRole.MEMBER,
-      userRepository.findByIdAndDeletedAtIsNull(3L).getRole()
+      userRepository.findByIdAndDeletedAtIsNull(3).getRole()
     );
 
     //Simuler la modification du rôle
@@ -109,7 +109,7 @@ class AdminUserControllerTest{
     //Vérifier que le rôle a changé
     assertEquals(
       UserRole.PRODUCER,
-      userRepository.findByIdAndDeletedAtIsNull(3L).getRole()
+      userRepository.findByIdAndDeletedAtIsNull(3).getRole()
     );
 
   }

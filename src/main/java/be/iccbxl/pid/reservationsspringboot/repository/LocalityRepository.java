@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import be.iccbxl.pid.reservationsspringboot.model.Locality;
 
-public interface LocalityRepository extends JpaRepository<Locality,Long>{
+public interface LocalityRepository extends JpaRepository<Locality,Integer>{
   Locality findByPostalCode(String postalCode);
   Locality findByLocality(String locality);
 }

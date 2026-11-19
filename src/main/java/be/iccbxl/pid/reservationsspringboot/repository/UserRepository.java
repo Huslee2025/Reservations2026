@@ -7,22 +7,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import be.iccbxl.pid.reservationsspringboot.model.User;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
   User findByLogin(String login);
   List<User> findByLastnameAndDeletedAtIsNull(String lastname);
 
-  User findById(long id);
   Optional<User> findByEmail(String email);
 
   User findByLoginAndDeletedAtIsNull(String login);
   List<User> findByDeletedAtIsNull();
   Optional<User> findByEmailAndDeletedAtIsNull(String email);
 
-  User findByIdAndDeletedAtIsNotNull(long id);
+  User findByIdAndDeletedAtIsNotNull(Integer id);
   List<User> findByDeletedAtIsNotNull();
 
-  User findByIdAndDeletedAtIsNull(long id);
+  User findByIdAndDeletedAtIsNull(Integer id);
 
   boolean existsByEmail(String email);
   boolean existsByLogin(String login);

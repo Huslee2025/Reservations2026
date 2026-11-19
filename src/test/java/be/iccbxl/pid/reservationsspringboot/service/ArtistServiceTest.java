@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,10 +52,10 @@ class ArtistServiceTest {
     Artist expectedArtist = new Artist("Daniel", "Marcelin");
 
     // Simuler le comportement du repository
-    when(artistRepository.findById(1L)).thenReturn(expectedArtist);
+    when(artistRepository.findById(1)).thenReturn(Optional.of(expectedArtist));
 
     // Appeler la methode du service
-    Artist actualArtist = artistService.getArtist(1L);
+    Artist actualArtist = artistService.getArtist(1);
 
     // Verifier le resultat
     assertEquals(expectedArtist, actualArtist);
@@ -85,10 +86,10 @@ class ArtistServiceTest {
     Artist updated = new Artist("Daniel","Marcelin");
 
     //Simuler la recherche dans la base
-    when(artistRepository.findById(1L)).thenReturn(existing);
+    when(artistRepository.findById(1)).thenReturn(Optional.of(existing));
 
     //Appeler le service
-    artistService.updateArtist(1L, updated);
+    artistService.updateArtist(1, updated);
 
     //Vérifier les nouvelles valeurs
     assertEquals("Daniel", existing.getFirstname());
@@ -102,7 +103,7 @@ class ArtistServiceTest {
   void deleteArtist_ShouldDeleteArtistById() {
 
     // Preparer identifiant
-    long id = 1L;
+    Integer id = 1;
 
     // Appeler methode du service
     artistService.deleteArtist(id);

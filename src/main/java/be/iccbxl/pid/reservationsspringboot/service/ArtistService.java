@@ -25,8 +25,8 @@ public class ArtistService {
     return artists;
   }
 
-  public Artist getArtist(long id) {
-    return artistRepository.findById(id);
+  public Artist getArtist(Integer id) {
+    return artistRepository.findById(id).orElse(null);
   }
 
   @PreAuthorize("hasRole('ADMIN')")
@@ -35,9 +35,9 @@ public class ArtistService {
   }
 
   @PreAuthorize("hasRole('ADMIN')")
-  public void updateArtist(long id, Artist artist) {
+  public void updateArtist(Integer id, Artist artist) {
 
-    Artist existing = artistRepository.findById(id);
+    Artist existing = artistRepository.findById(id).orElse(null);
 
     if (existing == null) {
       throw new IllegalArgumentException("Artiste introuvable : " + id);
@@ -50,7 +50,7 @@ public class ArtistService {
   }
 
   @PreAuthorize("hasRole('ADMIN')")
-  public void deleteArtist(long id) {
+  public void deleteArtist(Integer id) {
     artistRepository.deleteById(id);
   }
 }

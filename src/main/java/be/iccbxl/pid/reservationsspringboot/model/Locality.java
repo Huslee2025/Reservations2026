@@ -20,7 +20,7 @@ public class Locality {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @Setter
   @Column(name = "postal_code", length = 6, nullable = false)

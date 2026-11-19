@@ -38,7 +38,7 @@ public class RoleController{
 
   //Afficher les informations d'un rôle précis
   @GetMapping("/{id}")
-  public String show(@PathVariable("id") Long id, Model model){
+  public String show(@PathVariable("id") Integer id, Model model){
 
     Role role = roleService.getRole(id);
 
