@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -46,6 +47,9 @@ public class Show{
   @ManyToOne
   @JoinColumn(name="location_id", nullable = true)
   private Location location;
+
+  @ManyToMany(mappedBy = "shows")
+  private List<ArtistType> artistTypes = new ArrayList<>();
 
   @Setter
   @Column(nullable = false)
@@ -131,6 +135,26 @@ public class Show{
       if(representation.getShow() == this){
         representation.setShow(null);
       }
+    }
+
+    return this;
+  }
+
+  public Show addArtistType(ArtistType artistType){
+
+    if(!this.artistTypes.contains(artistType)){
+      this.artistTypes.add(artistType);
+      artistType.addShow(this);
+    }
+
+    return this;
+  }
+
+  public Show removeArtistType(ArtistType artistType){
+
+    if(this.artistTypes.contains(artistType)){
+      this.artistTypes.remove(artistType);
+      artistType.getShows().remove(this);
     }
 
     return this;
