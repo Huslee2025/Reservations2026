@@ -1,10 +1,16 @@
 package be.iccbxl.pid.reservationsspringboot.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,12 +28,39 @@ public class Role{
   @Column(name="role", length = 30, nullable = false)
   private String role;
 
+  @ManyToMany
+  @JoinTable(
+      name = "user_role",
+      joinColumns = @JoinColumn(name = "role_id"),
+      inverseJoinColumns = @JoinColumn(name = "user_id"))
+  private List<User> users = new ArrayList<>();
+
   protected Role(){
 
   }
 
   public Role(String role){
     this.role=role;
+  }
+
+  public Role addUser(User user){
+
+    if(!this.users.contains(user)){
+      this.users.add(user);
+      user.addRole(this);
+    }
+
+    return this;
+  }
+
+  public Role removeUser(User user){
+
+    if(this.users.contains(user)){
+      this.users.remove(user);
+      user.getRoles().remove(this);
+    }
+
+    return this;
   }
 
   @Override
