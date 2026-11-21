@@ -75,6 +75,17 @@ public class User {
     return this;
   }
 
+  public boolean hasRole(UserRole role){
+
+    for(Role userRole : this.roles){
+      if(role.name().equals(userRole.getRole())){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   @Override
   public String toString() {
     return login + "(" + firstname + " " + lastname + "-" + role + ")";

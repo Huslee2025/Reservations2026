@@ -52,7 +52,7 @@ public class AdminUserService{
     }
 
     //Interdire la modification du rôle d'un compte administrateur
-    if(user.getRole() == UserRole.ADMIN){
+    if(user.hasRole(UserRole.ADMIN)){
       throw new AccessDeniedException(
               "Impossible de modifier un administrateur"); 
     }
@@ -113,7 +113,7 @@ public class AdminUserService{
     }
 
     //Empêcher la désactivation d'un autre administrateur
-    if(user.getRole() == UserRole.ADMIN){
+    if(user.hasRole(UserRole.ADMIN)){
       throw new AccessDeniedException(
       "Impossible de désactiver un administrateur"
       );

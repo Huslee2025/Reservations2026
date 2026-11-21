@@ -64,7 +64,13 @@ public class AdminUserController{
         User user = getEditableUser(id);
 
         AdminUserRoleDto dto = new AdminUserRoleDto();
-        dto.setRole(user.getRole());
+        
+        for(UserRole role : UserRole.values()){
+          if(user.hasRole(role)){
+            dto.setRole(role);
+            break;
+      }
+    }
 
         model.addAttribute("roleForm",dto);
         model.addAttribute("userId",user.getId());
@@ -83,9 +89,11 @@ public class AdminUserController{
         Model model,
         RedirectAttributes redirectAttributes) {
 
+
+        User user = getEditableUser(id);
+
         if(result.hasErrors()){
 
-      User user = getEditableUser(id);
 
       model.addAttribute("userId",user.getId());
       model.addAttribute("userLogin",user.getLogin());
@@ -170,8 +178,14 @@ public class AdminUserController{
           "Utilisateur introuvable");
       }
 
-      if(user.getRole() == UserRole.ADMIN){
+      if(user.hasRole(UserRole.ADMIN)){
         throw new AccessDeniedException("Impossible de modifier le rôle d'un administrateur");
+      }
+
+      if (user.getRoles().size() > 1) {
+        throw new ResponseStatusException(
+            HttpStatus.CONFLICT,
+            "Cet utilisateur possède plusieurs rôles");
       }
 
       return user;

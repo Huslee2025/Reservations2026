@@ -7,11 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import be.iccbxl.pid.reservationsspringboot.dto.UserProfileDto;
 import be.iccbxl.pid.reservationsspringboot.model.Language;
+import be.iccbxl.pid.reservationsspringboot.model.Role;
 import be.iccbxl.pid.reservationsspringboot.model.User;
+import be.iccbxl.pid.reservationsspringboot.model.UserRole;
 import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
 import be.iccbxl.pid.reservationsspringboot.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,7 +59,24 @@ public class ProfileController {
     dto.setEmail(user.getEmail());
     dto.setLangue(user.getLangue());
     dto.setLogin(user.getLogin());
-    dto.setRole(user.getRole().getValue());
+    //Récupérer les rôles de l'utilisateur en francais
+    List<String> roleLabels = new ArrayList<>();
+
+    for(Role role : user.getRoles()){
+
+      String label = role.getRole();
+
+      for(UserRole userRole : UserRole.values()){
+
+        if(userRole.name().equals(role.getRole())){
+          label = userRole.getValue();
+          break;
+        }
+      }
+
+      roleLabels.add(label);
+    }
+    dto.setRole(String.join(", ", roleLabels));
 
     //Conversion du code linguistique en nom de la langue 
     Language userLanguage = Arrays.stream(Language.values())
