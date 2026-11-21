@@ -6,11 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import be.iccbxl.pid.reservationsspringboot.dto.UserProfileDto;
 import be.iccbxl.pid.reservationsspringboot.dto.UserRegistrationDto;
+import be.iccbxl.pid.reservationsspringboot.model.Role;
 import be.iccbxl.pid.reservationsspringboot.model.User;
 import be.iccbxl.pid.reservationsspringboot.model.UserRole;
+import be.iccbxl.pid.reservationsspringboot.repository.RoleRepository;
 import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
 
 @Service
@@ -20,6 +23,9 @@ public class UserService {
 
   @Autowired
   private PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private RoleRepository roleRepository;
 
   public List<User> getAllUsers() {
 
@@ -40,7 +46,14 @@ public class UserService {
 
   }
 
+  @Transactional
   public void registerFromDto(UserRegistrationDto dto){
+
+    Role memberRole = roleRepository.findByRole("MEMBER");
+
+    if(memberRole == null){
+      throw new IllegalStateException("Rôle MEMBER introuvable");
+    }
 
     User user = new User();
     user.setFirstname(dto.getFirstname());
@@ -51,6 +64,8 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(dto.getPassword()));
     user.setRole(UserRole.MEMBER);
     userRepository.save(user);
+
+    memberRole.addUser(user);
 
   }
 
