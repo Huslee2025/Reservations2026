@@ -2,6 +2,7 @@ package be.iccbxl.pid.reservationsspringboot.service;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.access.AccessDeniedException;
@@ -10,17 +11,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import be.iccbxl.pid.reservationsspringboot.model.Role;
 import be.iccbxl.pid.reservationsspringboot.model.User;
 import be.iccbxl.pid.reservationsspringboot.model.UserRole;
+import be.iccbxl.pid.reservationsspringboot.repository.RoleRepository;
 import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
 
 @Service
 public class AdminUserService{
 
   private final UserRepository userRepository;
+  private final RoleRepository roleRepository;
 
-  public AdminUserService(UserRepository userRepository){
-    this.userRepository =userRepository;
+  public AdminUserService(UserRepository userRepository,
+                          RoleRepository roleRepository){
+    this.userRepository = userRepository;
+    this.roleRepository = roleRepository;
   }
 
   @PreAuthorize("hasRole('ADMIN')")
@@ -57,7 +63,25 @@ public class AdminUserService{
               "Le nouveau rôle est obligatoire");
     }
 
-    //Mettre à jour et enregistrer le nouveau rôle
+    //Récupérer le nouveau rôle dans la base de données
+    Role role = roleRepository.findByRole(newRole.name());
+
+    if(role == null){
+      throw new IllegalStateException("Rôle introuvable");
+    }
+
+    //Récupérer une copie des anciens rôles
+    List<Role> oldRoles = new ArrayList<>(user.getRoles());
+
+    //Supprimer les anciennes associations
+    for(Role oldRole : oldRoles){
+      oldRole.removeUser(user);
+    }
+
+    //Ajouter la nouvelle association
+    role.addUser(user);
+
+    //Synchroniser provisoirement l'ancien système
     user.setRole(newRole);
     userRepository.save(user);
 
