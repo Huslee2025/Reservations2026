@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import be.iccbxl.pid.reservationsspringboot.model.Role;
 import be.iccbxl.pid.reservationsspringboot.model.User;
 
 import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
@@ -21,6 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
   private UserRepository userRepository;
 
   @Override
+  @Transactional(readOnly = true)
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
     System.out.println("Connexion demandée pour : " + username);
@@ -33,15 +37,20 @@ public class CustomUserDetailsService implements UserDetailsService {
     return new org.springframework.security.core.userdetails.User(
         username,
         user.getPassword(),
-        getGrantedAuthorities(user.getRole().toString()));
+        getGrantedAuthorities(user.getRoles()));
 
   }
 
-  private List<GrantedAuthority> getGrantedAuthorities(String role) {
-    List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-    authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+  private List<GrantedAuthority> getGrantedAuthorities(List<Role> roles) {
+
+    List<GrantedAuthority> authorities = new ArrayList<>();
+
+    for(Role role : roles){
+      authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole()));
+    }
 
     return authorities;
+
   }
 
 }
