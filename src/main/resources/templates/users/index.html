@@ -54,7 +54,7 @@
             </td>
             <td>
               <a 
-                th:if="${!user.hasRole(T(be.iccbxl.pid.reservationsspringboot.model.UserRole).ADMIN) and #lists.size(user.roles) <= 1}"
+                th:if="${!user.hasRole(T(be.iccbxl.pid.reservationsspringboot.model.UserRole).ADMIN)}"                
                 th:href="@{/admin/users/{id}/edit-role(id=${user.id})}" 
                 >
                 Modifier le rôle 

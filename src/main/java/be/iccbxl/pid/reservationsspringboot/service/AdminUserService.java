@@ -4,6 +4,7 @@ package be.iccbxl.pid.reservationsspringboot.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +32,7 @@ public class AdminUserService{
 
   @PreAuthorize("hasRole('ADMIN')")
   @Transactional
-  public void updateUserRole(Integer id, UserRole newRole){
+  public void updateUserRoles(Integer id, Set<UserRole> newRoles){
 
     //Vérifier que l'utilisateur existe et que son compte est actif
     User user = userRepository.findByIdAndDeletedAtIsNull(id);
@@ -57,34 +58,59 @@ public class AdminUserService{
               "Impossible de modifier un administrateur"); 
     }
 
-    //Vérifier que le nouveau rôle est autorisé
-    if(newRole == null){
+    //Vérifier qu'au moins un rôle a été sélectionné
+    if(newRoles == null || newRoles.isEmpty()){
       throw new IllegalArgumentException(
-              "Le nouveau rôle est obligatoire");
+              "Au moins un rôle doit être sélectionné");
     }
 
-    //Récupérer le nouveau rôle dans la base de données
-    Role role = roleRepository.findByRole(newRole.name());
+    //Récupérer tous les rôles sélectionnés depuis la BD
+    List<Role> selectedRoles = new ArrayList<>();
 
-    if(role == null){
-      throw new IllegalStateException("Rôle introuvable");
+    for(UserRole newRole : newRoles){
+
+      Role role = roleRepository.findByRole(newRole.name());
+
+      if(role == null){
+        throw new IllegalStateException(
+          "Rôle introuvable : " + newRole.name());
+      }
+
+      selectedRoles.add(role);
     }
 
     //Récupérer une copie des anciens rôles
     List<Role> oldRoles = new ArrayList<>(user.getRoles());
 
-    //Supprimer les anciennes associations
+    //Retirer les rôles qui ne sont plus sélectionnés
     for(Role oldRole : oldRoles){
-      oldRole.removeUser(user);
+
+      if(!selectedRoles.contains(oldRole)){
+        oldRole.removeUser(user);
+      }
     }
 
-    //Ajouter la nouvelle association
-    role.addUser(user);
+    //Ajouter les nouveaux rôles
+    for(Role selectedRole : selectedRoles){
 
-    //Synchroniser provisoirement l'ancien système
-    user.setRole(newRole);
+      if(!user.getRoles().contains(selectedRole)){
+        selectedRole.addUser(user);
+      }
+    }
+
+    //Synchroniser provisoirement l'ancienne colonne users.role
+    if(!newRoles.contains(user.getRole())){
+
+      for(UserRole role : UserRole.values()){
+
+        if(newRoles.contains(role)){
+          user.setRole(role);
+          break;
+        }
+      }
+    }
+
     userRepository.save(user);
-
   }
 
   @PreAuthorize("hasRole('ADMIN')")

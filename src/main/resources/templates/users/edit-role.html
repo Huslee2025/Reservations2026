@@ -25,29 +25,29 @@
         method="post"
         >
 
-        <div>
-          <label for="role">Rôle :</label>
+        <fieldset>
+          <legend>Rôles :</legend>
 
-          <select id="role" th:field="*{role}" required>
+          <div th:each="availableRole : ${roles}">
 
-            <option value="">Sélectionner un rôle</option>
+            <input 
+              type="checkbox"
+              th:field="*{roles}"
+              th:value="${availableRole}" />
 
-            <option
-              th:each="availableRole : ${roles}"
-              th:value="${availableRole}"
-              th:text="${availableRole.value}"
-            >
-            Membre
-            </option>
+            <label
+              th:for="${#ids.prev('roles')}"
+              th:text="${availableRole.value}">
+              Membre
+            </label>
             
-          </select>
+          </div>
 
-          <p 
-            th:if="${#fields.hasErrors('role')}"
-            th:errors="*{role}"
-          ></p>
-
-        </div>
+          <p
+            th:if="${#fields.hasErrors('roles')}"
+            th:errors="*{roles}">
+          </p>
+        </fieldset>
 
         <div>
           <button type="submit">Enregistrer</button>

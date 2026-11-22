@@ -67,8 +67,7 @@ public class AdminUserController{
         
         for(UserRole role : UserRole.values()){
           if(user.hasRole(role)){
-            dto.setRole(role);
-            break;
+            dto.getRoles().add(role);
       }
     }
 
@@ -102,7 +101,7 @@ public class AdminUserController{
       return "users/edit-role";
     }
 
-    try{adminUserService.updateUserRole(id,dto.getRole());
+    try{adminUserService.updateUserRoles(id,dto.getRoles());
   
     }catch(IllegalArgumentException e){
       throw new ResponseStatusException(
@@ -182,13 +181,6 @@ public class AdminUserController{
         throw new AccessDeniedException("Impossible de modifier le rôle d'un administrateur");
       }
 
-      if (user.getRoles().size() > 1) {
-        throw new ResponseStatusException(
-            HttpStatus.CONFLICT,
-            "Cet utilisateur possède plusieurs rôles");
-      }
-
       return user;
-
   }
 }
