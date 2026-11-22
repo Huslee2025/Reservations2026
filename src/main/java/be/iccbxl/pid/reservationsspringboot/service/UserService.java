@@ -12,7 +12,6 @@ import be.iccbxl.pid.reservationsspringboot.dto.UserProfileDto;
 import be.iccbxl.pid.reservationsspringboot.dto.UserRegistrationDto;
 import be.iccbxl.pid.reservationsspringboot.model.Role;
 import be.iccbxl.pid.reservationsspringboot.model.User;
-import be.iccbxl.pid.reservationsspringboot.model.UserRole;
 import be.iccbxl.pid.reservationsspringboot.repository.RoleRepository;
 import be.iccbxl.pid.reservationsspringboot.repository.UserRepository;
 
@@ -62,7 +61,6 @@ public class UserService {
     user.setEmail(dto.getEmail());
     user.setLangue(dto.getLangue());
     user.setPassword(passwordEncoder.encode(dto.getPassword()));
-    user.setRole(UserRole.MEMBER);
     userRepository.save(user);
 
     memberRole.addUser(user);

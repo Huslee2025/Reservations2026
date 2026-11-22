@@ -101,18 +101,6 @@ public class AdminUserService{
       }
     }
 
-    //Synchroniser provisoirement l'ancienne colonne users.role
-    if(!newRoles.contains(user.getRole())){
-
-      for(UserRole role : UserRole.values()){
-
-        if(newRoles.contains(role)){
-          user.setRole(role);
-          break;
-        }
-      }
-    }
-
     userRepository.save(user);
   }
 

@@ -6,8 +6,6 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,9 +40,6 @@ public class User {
   private String email;
 
   private String langue;
-
-  @Enumerated(EnumType.STRING)
-  private UserRole role;
 
   private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -92,7 +87,7 @@ public class User {
 
   @Override
   public String toString() {
-    return login + "(" + firstname + " " + lastname + "-" + role + ")";
+    return login + "(" + firstname + " " + lastname + ")";
   }
 
 }
