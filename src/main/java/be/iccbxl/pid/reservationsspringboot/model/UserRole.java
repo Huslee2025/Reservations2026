@@ -17,4 +17,16 @@ public enum UserRole {
     return role;
   }
 
+  public static String getLabel(String roleName){
+
+    for(UserRole role : UserRole.values()){
+
+      if(role.name().equals(roleName)){
+        return role.getValue();
+      }
+    }
+
+    return roleName;
+  }
+
 }
