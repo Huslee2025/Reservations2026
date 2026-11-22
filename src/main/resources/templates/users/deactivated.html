@@ -46,7 +46,7 @@
 
             <span
               th:each="role, iter : ${user.roles}"
-              th:text="${T(be.iccbxl.pid.reservationsspringboot.model.UserRole).getLabel(role.role) + (iter.last ? '' : ', ')}">
+              th:text="${role.label + (iter.last ? '' : ', ')}">
             </span>
            </td>          
             <td>

@@ -49,18 +49,18 @@
 
               <span
                 th:each="role, iter : ${user.roles}"
-                th:text="${T(be.iccbxl.pid.reservationsspringboot.model.UserRole).getLabel(role.role) + (iter.last ? '' : ', ')}">
+                th:text="${role.label + (iter.last ? '' : ', ')}">
               </span>
             </td>
             <td>
               <a 
-                th:if="${!user.hasRole(T(be.iccbxl.pid.reservationsspringboot.model.UserRole).ADMIN)}"                
+                th:if="${!user.isAdmin() or user.login == currentLogin}"
                 th:href="@{/admin/users/{id}/edit-role(id=${user.id})}" 
                 >
                 Modifier le rôle 
               </a>
 
-              <form th:if="${!user.hasRole(T(be.iccbxl.pid.reservationsspringboot.model.UserRole).ADMIN)}"
+              <form th:if="${!user.isAdmin()}"
                     th:action="@{/admin/users/{id}/deactivate(id=${user.id})}"
                     method="post"
                     style="display: inline; margin-left: 12px;">

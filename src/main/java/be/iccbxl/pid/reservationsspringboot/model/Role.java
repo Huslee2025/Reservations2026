@@ -63,6 +63,10 @@ public class Role{
     return this;
   }
 
+  public String getLabel(){
+    return UserRole.getLabel(this.role);
+  }
+
   @Override
   public String toString(){
     return "Role [id=" + id + ", role=" + role +"]";

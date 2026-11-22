@@ -148,4 +148,58 @@ class AdminUserControllerTest{
     assertEquals(2, user.getRoles().size());
   }
 
+  @Test
+  @Transactional
+  @WithMockUser(username = "bob", roles = "ADMIN")
+  void adminCanUpdateOwnRolesWithoutLosingAdmin() throws Exception{
+
+    //Bob modifie ses propres rôles
+    mockMvc.perform(
+      MockMvcRequestBuilders.post("/admin/users/1/edit-role")
+      .param("roles", "ADMIN", "MEMBER", "PRESS")
+      .with(SecurityMockMvcRequestPostProcessors.csrf())
+    )
+      .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+      .andExpect(MockMvcResultMatchers.redirectedUrl("/admin/users"));
+
+    //Récupérer Bob après la modification
+    User bob = userRepository.findByIdAndDeletedAtIsNull(1);
+
+    //Vérifier qu'il conserve ADMIN et possède les rôles sélectionnés
+    assertTrue(bob.hasRole(UserRole.ADMIN));
+    assertTrue(bob.hasRole(UserRole.MEMBER));
+    assertTrue(bob.hasRole(UserRole.PRESS));
+
+    //Vérifier qu'il possède exactement trois rôles
+    assertEquals(3, bob.getRoles().size());
+  }
+
+  @Test
+  @Transactional
+  @WithMockUser(username = "bob", roles = "ADMIN")
+  void adminCannotRemoveOwnAdminRole() throws Exception{
+
+    //Récupérer Bob avant la tentative de modification
+    User bob = userRepository.findByIdAndDeletedAtIsNull(1);
+
+    assertTrue(bob.hasRole(UserRole.ADMIN));
+
+    int initialRoleCount = bob.getRoles().size();
+
+    //Bob tente de retirer ADMIN en conservant MEMBER et PRESS
+    mockMvc.perform(
+      MockMvcRequestBuilders.post("/admin/users/1/edit-role")
+      .param("roles", "MEMBER", "PRESS")
+      .with(SecurityMockMvcRequestPostProcessors.csrf())
+    )
+      .andExpect(MockMvcResultMatchers.status().isForbidden());
+
+    //Vérifier que son rôle ADMIN est toujours présent
+    User updatedBob = userRepository.findByIdAndDeletedAtIsNull(1);
+
+    assertTrue(updatedBob.hasRole(UserRole.ADMIN));
+
+    //Vérfier que le nombre de rôles n'a pas changé
+    assertEquals(initialRoleCount, updatedBob.getRoles().size());
+  }
 }

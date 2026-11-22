@@ -41,27 +41,30 @@ public class AdminUserService{
       throw new IllegalArgumentException("Utilisateur introuvable");
     }
 
-    //Récupérer le login de l'administrateur connecté
-    String currentLogin=SecurityContextHolder.getContext()
+    //Récupérer le login de l'utilisateur connecté
+    String currentLogin = SecurityContextHolder.getContext()
           .getAuthentication()
           .getName();
 
-    //Interdire la modification de son propre rôle
-    if(user.getLogin().equals(currentLogin)){
-      throw new AccessDeniedException(
-                 "Impossible de modifier son propre rôle");
-    }
+    //Vérifier si l'administrateur modifie son propre compte
+    boolean isOwnAccount = user.getLogin().equals(currentLogin);
 
-    //Interdire la modification du rôle d'un compte administrateur
-    if(user.hasRole(UserRole.ADMIN)){
+    //Interdire la modification d'un autre administrateur
+    if(user.hasRole(UserRole.ADMIN) && !isOwnAccount){
       throw new AccessDeniedException(
-              "Impossible de modifier un administrateur"); 
+       "Impossible de modifier un autre administrateur");
     }
 
     //Vérifier qu'au moins un rôle a été sélectionné
     if(newRoles == null || newRoles.isEmpty()){
       throw new IllegalArgumentException(
               "Au moins un rôle doit être sélectionné");
+    }
+
+    //Empêcher un administrateur de retirer son propre rôle ADMIN
+    if(isOwnAccount && !newRoles.contains(UserRole.ADMIN)){
+      throw new AccessDeniedException(
+        "Impossible de retirer son propre rôle ADMIN");
     }
 
     //Récupérer tous les rôles sélectionnés depuis la BD

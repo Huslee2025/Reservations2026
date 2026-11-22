@@ -3,6 +3,7 @@ package be.iccbxl.pid.reservationsspringboot.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,12 @@ public class AdminUserController{
   public String index(Model model){
 
     model.addAttribute("users",userService.getAllUsers());
+
+    String currentLogin = SecurityContextHolder.getContext()
+      .getAuthentication()
+      .getName();
+
+    model.addAttribute("currentLogin", currentLogin);
 
     return "users/index";
   }
@@ -163,8 +170,6 @@ public class AdminUserController{
 
     return "redirect:/admin/users/deactivated";
     }
-    
-    
 
   //Retrouver un compte dont le rôle peut être modifié
     private User getEditableUser(Integer id) {
@@ -177,9 +182,19 @@ public class AdminUserController{
           "Utilisateur introuvable");
       }
 
-      if(user.hasRole(UserRole.ADMIN)){
-        throw new AccessDeniedException("Impossible de modifier le rôle d'un administrateur");
-      }
+    //Récupérer le Login de l'utilisateur connecté
+    String currentLogin = SecurityContextHolder.getContext()
+      .getAuthentication()
+      .getName();
+
+    //Vérifier s'il modifie son propre compte
+    boolean isOwnAccount = user.getLogin().equals(currentLogin);
+
+    //Interdire la modification d'un autre administrateur
+    if(user.hasRole(UserRole.ADMIN) && !isOwnAccount){
+        throw new AccessDeniedException(
+          "Impossible de modifier un autre administrateur");
+    }
 
       return user;
   }

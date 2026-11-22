@@ -86,6 +86,10 @@ public class User {
     return false;
   }
 
+  public boolean isAdmin(){
+    return hasRole(UserRole.ADMIN);
+  }
+
   @Override
   public String toString() {
     return login + "(" + firstname + " " + lastname + "-" + role + ")";
