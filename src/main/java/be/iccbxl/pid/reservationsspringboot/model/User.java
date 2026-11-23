@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,6 +51,10 @@ public class User {
   @Setter(AccessLevel.NONE)
   private List<Role> roles = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user")
+  @Setter(AccessLevel.NONE)
+  private List<Reservation> reservations = new ArrayList<>();
+
   public User addRole(Role role){
 
     if(!this.roles.contains(role)){
@@ -83,6 +88,23 @@ public class User {
 
   public boolean isAdmin(){
     return hasRole(UserRole.ADMIN);
+  }
+
+  public User addReservation(Reservation reservation){
+
+    if(reservation != null){
+    reservation.setUser(this);
+    }
+
+    return this;
+  }
+
+  public User removeReservation(Reservation reservation){
+    if(reservation != null && reservation.getUser() == this){
+      reservation.setUser(this);
+    }
+
+    return this;
   }
 
   @Override
