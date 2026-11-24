@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html
+  lang="fr"
+  xmnlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}"
+>
+
+  <head>
+    <title>Réservations</title>
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+
+      <h2>Réservations</h2>
+
+      <p> Liste des réservations.</p>
+
+      <table th:unless="${#lists.isEmpty(reservations)}">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Utilisateur</th>
+            <th>Date de réservation</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr th:each="reservation : ${reservations}">
+            <td th:text="${reservation.id}"></td>
+            <td th:text="${reservation.user.login}"></td>
+            <td th:text="${#temporals.format(reservation.bookingDate, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${reservation.status}"></td>
+
+            <td>
+            <a th:href="@{/admin/reservations/{id}(id=${reservation.id})}">
+            Voir 
+            </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p th:if="${#lists.isEmpty(reservations)}">
+        Aucune réservation trouvée
+      </p>
+
+      <nav>
+        <a th:href="@{/admin}">Retour à l'administration</a>
+      </nav>
+    </div>
+  </body>
+
+</html>
+
