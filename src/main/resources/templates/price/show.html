@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html
+  lang="fr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}">
+
+  <head>
+    <title>Détails d'un tarif</title>
+  </head>
+
+  <body>
+    <div layout:fragment = "content">
+
+      <h2 th:text="|Tarif n°${price.id}|">
+      Détails du tarif
+      </h2>
+
+      <p>
+        <strong>Type :</strong>
+        <span th:text="${price.type}">Normal</span>
+      </p>
+
+      <p>
+        <strong>Prix :</strong>
+        <span th:text="|${price.price} €|">20.00€</span>
+      </p>
+
+      <p>
+        <strong>Date de début :</strong>
+        <span th:text="${price.startDate != null
+              ? #temporals.format(price.startDate, 'dd/MM/yyyy')
+              : 'Non définie'}">
+        01/1/2026
+        </span>
+      </p>
+
+      <p>
+        <strong>Date de fin :</strong>
+        <span th:text="${price.endDate != null
+              ? #temporals.format(price.endDate, 'dd/MM/yyyy')
+              : 'Non définie'}">
+        31/12/2026
+        </span>
+      </p>
+
+      <nav>
+        <a th:href="@{/admin/prices}">
+        Retour à la liste des tarifs
+        </a>
+      </nav>
+    </div>
+  </body>
+</html>
+

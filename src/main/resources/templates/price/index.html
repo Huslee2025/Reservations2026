@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html
+  lang="fr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}">
+
+  <head>
+    <title>Gestion des tarifs</title>
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+
+      <h2>Gestion des tarifs</h2>
+
+      <p>Liste des tarifs disponibles</p>
+
+      <table th:unless="${#lists.isEmpty(prices)}">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Prix</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr th:each="price : ${prices}">
+            <td th:text="${price.id}"></td>
+            <td th:text="${price.type}"></td>
+            <td th:text="|${price.price} €|"></td>
+            <td th:text="${price.startDate != null
+                ? #temporals.format(price.startDate, 'dd/MM/yyyy')
+                : 'Non définie'}">
+            </td>
+            <td th:text="${price.endDate != null 
+                ? #temporals.format(price.endDate, 'dd/MM/yyyy')
+                : 'Non définie'}">
+            </td>
+
+            <td> 
+              <a th:href="@{/admin/prices/{id}(id=${price.id})}">
+            Voir
+            </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p th:if="${#lists.isEmpty(prices)}">
+        Aucun tarif trouvé.
+      </p>
+
+      <nav>
+        <a th:href="@{/admin}">
+        Retour à l'administration
+        </a>
+      </nav>
+    </div>
+  </body>
+</html>
+
