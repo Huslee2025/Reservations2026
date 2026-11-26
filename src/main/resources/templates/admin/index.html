@@ -5,59 +5,64 @@
   lang="fr"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/main}"
->
-  <head>
-    <title>Administration</title>
-  </head>
+  layout:decorate="~{layouts/main}">
 
-  <body>
-    <div layout:fragment="content">
-      <h2>Tableau de bord - Administration</h2>
+<head>
+  <title>Administration</title>
+</head>
 
-      <p>Bienvenu dans l'espace d'administration</p>
+<body>
+  <div layout:fragment="content">
+    <h2>Tableau de bord - Administration</h2>
 
-      <h3>Gestion du catalogue</h3>
+    <p>Bienvenue dans l'espace d'administration</p>
 
-      <ul>
-        <li>
-          <a th:href="@{/artists}">Gérer les artistes</a>
-        </li>
-      </ul>
+    <h3>Gestion du catalogue</h3>
 
-      <h3>Gestion des comptes</h3>
+    <ul>
+      <li>
+        <a th:href="@{/artists}">Gérer les artistes</a>
+      </li>
+    </ul>
 
-      <ul>
-        <li>
-          <a th:href="@{/admin/users}">Gérer les utilisateurs</a>
-        </li>
-      </ul>
+    <h3>Gestion des comptes</h3>
 
-      <h3>Gestion des réservations</h3>
+    <ul>
+      <li>
+        <a th:href="@{/admin/users}">Gérer les utilisateurs</a>
+      </li>
+    </ul>
 
-      <ul>
-        <li>
-          <a th:href="@{/admin/reservations}">
+    <h3>Gestion des réservations</h3>
+
+    <ul>
+      <li>
+        <a th:href="@{/admin/reservations}">
           Gérer les réservations
-          </a>
-        </li>
-      </ul>
+        </a>
+      </li>
 
-      <h3>Gestion des tarifs</h3>
+      <li>
+        <a th:href="@{/admin/representation-reservations}">
+          Gérer les lignes de réservation
+        </a>
+      </li>
+    </ul>
 
-      <ul>
-        <li>
-          <a th:href="@{/admin/prices}">
+    <h3>Gestion des tarifs</h3>
+
+    <ul>
+      <li>
+        <a th:href="@{/admin/prices}">
           Gérer les tarifs
-          </a>
-        </li>
-      </ul>
+        </a>
+      </li>
+    </ul>
 
-      <nav>
-        <a th:href="@{/}">Retour à l'accueil</a>
-      </nav>
-    </div>
-  </body>
+    <nav>
+      <a th:href="@{/}">Retour à l'accueil</a>
+    </nav>
+  </div>
+</body>
+
 </html>
-
-

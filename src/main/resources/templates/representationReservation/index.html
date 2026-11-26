@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html
+  lang="fr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}">
+
+  <head>
+    <title>Lignes de réservation</title>
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+
+      <h2>Lignes de réservation</h2>
+
+      <p>Liste des lignes de réservation</p>
+
+      <table th:unless="${#lists.isEmpty(representationReservations)}">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Représentation</th>
+            <th>Date de représentation</th>
+            <th>Réservation</th>
+            <th>Tarif</th>
+            <th>Prix unitaire</th>
+            <th>Quantité</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr th:each="ligne : ${representationReservations}">
+            <td th:text="${ligne.id}"></td>
+            <td th:text="${ligne.representation.id}"></td>
+            <td th:text="${#temporals.format(ligne.representation.when, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${ligne.reservation.id}"></td>
+            <td th:text="${ligne.price.type}"></td>
+            <td th:text="|${ligne.price.price} €|"></td>
+            <td th:text="${ligne.quantity}"></td>
+            <td>
+             <a th:href="@{/admin/representation-reservations/{id}(id=${ligne.id})}">
+             Voir
+             </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p th:if="${#lists.isEmpty(representationReservations)}">
+        Aucune ligne de réservation trouvée.
+      </p>
+
+      <nav>
+        <a th:href="@{/admin}">Retour à l'administration</a>
+      </nav>
+    </div>
+  </body>
+</html>
+

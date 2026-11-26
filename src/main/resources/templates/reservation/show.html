@@ -6,35 +6,35 @@
   layout:decorate="~{layouts/main}">
 
 
-  <head>
-    <title>Détails de la réservation</title>
-  </head>
+<head>
+  <title>Détails de la réservation</title>
+</head>
 
-  <body>
-    <div layout:fragment="content">
+<body>
+  <div layout:fragment="content">
 
-      <h2 th:text="|Réservation n°${reservation.id}|">
+    <h2 th:text="|Réservation n°${reservation.id}|">
       Détails de la réservation
-      </h2>
+    </h2>
 
-      <p>
-        <strong>Utilisateur :</strong>
-        <span th:text="${reservation.user.login}">Anna</span>
-      </p>
+    <p>
+      <strong>Utilisateur :</strong>
+      <span th:text="${reservation.user.login}">Anna</span>
+    </p>
 
-      <p>
-        <strong>Prénom :</strong>
-        <span th:text="${reservation.user.firstname}">Anna</span>
-      </p>
+    <p>
+      <strong>Prénom :</strong>
+      <span th:text="${reservation.user.firstname}">Anna</span>
+    </p>
 
-      <p>
-        <strong>Nom :</strong>
-        <span th:text="${reservation.user.lastname}">Lyse</span>
-      </p>
+    <p>
+      <strong>Nom :</strong>
+      <span th:text="${reservation.user.lastname}">Lyse</span>
+    </p>
 
-      <p>
-        <strong>Date de réservation :</strong>
-        <span th:text="${#temporals.format(reservation.bookingDate, 'dd/MM/yyyy HH:mm')}">
+    <p>
+      <strong>Date de réservation :</strong>
+      <span th:text="${#temporals.format(reservation.bookingDate, 'dd/MM/yyyy HH:mm')}">
         20/11/2026 16:45
         </span>
       </p>
@@ -45,6 +45,11 @@
       </p>
 
       <nav>
+
+        <button type="button" onclick="history.back()">
+        Retour
+        </button>
+
         <a th:href="@{/admin/reservations}">
         Retour à la liste des réservations
         </a>
@@ -53,4 +58,3 @@
     </div>
   </body>
 </html>
-

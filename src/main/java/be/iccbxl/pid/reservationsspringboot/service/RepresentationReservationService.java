@@ -18,7 +18,7 @@ public class RepresentationReservationService{
   }
 
   public List<RepresentationReservation> getAll(){
-    return repository.findAll();
+    return repository.findAllByOrderByReservation_IdAscIdAsc();
   }
 
   public RepresentationReservation getRepresentationReservation(Integer id){

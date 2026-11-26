@@ -10,9 +10,8 @@ import be.iccbxl.pid.reservationsspringboot.model.RepresentationReservation;
 
 public interface RepresentationReservationRepository extends JpaRepository<RepresentationReservation, Integer>{
 
-  @Override
   @EntityGraph(attributePaths = {"representation", "reservation", "price"})
-  List<RepresentationReservation> findAll();
+  List<RepresentationReservation> findAllByOrderByReservation_IdAscIdAsc();
 
   @Override
   @EntityGraph(attributePaths = {"representation", "reservation", "price"})

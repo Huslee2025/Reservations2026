@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html
+  lang="fr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}">
+
+  <head>
+    <title>Détails de la ligne de réservation</title>
+  </head>
+
+  <body>
+    <div layout:fragment="content">
+
+      <h2 th:text="|Ligne de réservation n°${representationReservation.id}|">
+      Détails de la ligne de réservation
+      </h2>
+
+      <p>
+        <strong>Représentation :</strong>
+        <span th:text="${representationReservation.representation.id}"></span>
+      </p>
+
+      <p>
+        <strong>Date de représentation :</strong>
+        <span th:text="${#temporals.format(representationReservation.representation.when, 'dd/MM/yyyy HH:mm')}"></span>
+      </p>
+
+      <p>
+        <strong>Réservation :</strong>
+        <a th:href="@{/admin/reservations/{id}(id=${representationReservation.reservation.id})}"
+           th:text="|Réservation n°${representationReservation.reservation.id}|">
+        </a>
+      </p>
+
+      <p>
+        <strong>Statut de la réservation :</strong>
+        <span th:text="${representationReservation.reservation.status}"></span>
+      </p>
+
+      <p>
+        <strong>Tarif :</strong>
+        <a th:href="@{/admin/prices/{id}(id=${representationReservation.price.id})}"
+           th:text="${representationReservation.price.type}">
+        </a>
+      </p>
+
+      <p>
+        <strong>Prix unitaire :</strong>
+        <span th:text="|${representationReservation.price.price} €|"></span>
+      </p>
+
+      <p>
+        <strong>Quantité :</strong>
+        <span th:text="${representationReservation.quantity}"></span>
+      </p>
+
+      <nav>
+        <a th:href="@{/admin/representation-reservations}">
+        Retour à la liste des lignes de réservation
+        </a>
+      </nav>
+      
+    </div>
+  </body>
+</html>
+
