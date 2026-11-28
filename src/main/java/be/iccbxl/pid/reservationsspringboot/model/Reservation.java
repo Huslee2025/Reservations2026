@@ -49,6 +49,12 @@ public class Reservation{
 
   public void setUser(User user){
 
+    if(user == null){
+      throw new IllegalArgumentException(
+        "L'utilisateur est obligatoire"
+      );
+    }
+
     if(this.user == user){
       return;
     }
@@ -60,7 +66,7 @@ public class Reservation{
       previousUser.getReservations().remove(this);
     }
 
-    if(user != null && !user.getReservations().contains(this)){
+    if(!user.getReservations().contains(this)){
       user.getReservations().add(this);
     }
   }

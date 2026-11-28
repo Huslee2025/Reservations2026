@@ -51,6 +51,9 @@ public class Show{
   @ManyToMany(mappedBy = "shows")
   private List<ArtistType> artistTypes = new ArrayList<>();
 
+  @OneToMany(mappedBy = "show")
+  private List<Review> reviews = new ArrayList<>();
+
   @Setter
   @Column(nullable = false)
   private boolean bookable;
@@ -158,6 +161,13 @@ public class Show{
     }
 
     return this;
+  }
+
+  public void addReview(Review review){
+
+    if(review != null){
+      review.setShow(this);
+    }
   }
 
   @Override

@@ -55,6 +55,10 @@ public class User {
   @Setter(AccessLevel.NONE)
   private List<Reservation> reservations = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user")
+  @Setter(AccessLevel.NONE)
+  private List<Review> reviews = new ArrayList<>();
+
   public User addRole(Role role){
 
     if(!this.roles.contains(role)){
@@ -99,12 +103,12 @@ public class User {
     return this;
   }
 
-  public User removeReservation(Reservation reservation){
-    if(reservation != null && reservation.getUser() == this){
-      reservation.setUser(this);
-    }
 
-    return this;
+  public void addReview(Review review){
+
+    if(review != null){
+      review.setUser(this);
+    }
   }
 
   @Override
